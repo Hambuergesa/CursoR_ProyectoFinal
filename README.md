@@ -11,4 +11,15 @@ https://www.kaggle.com/datasets/gianinamariapetrascu/gender-inequality-index?res
 ## Objetivos
 Identificar mediante el uso de Rstudios las diferencias marcadas por el genero el la educacion secundaria en USA. 
 
-Por Lucía García
+## Datos personales
+- García, Lucía
+- 22
+- Tena
+
+## CARACTRÍSTICAS DEL EQUIPO
+- Procesador: AMD Ryzen 3 3250U with Radeon Graphics            2.60 GHz
+- RAM istalada: 4,00 GB (3,42 GB usable)
+- Tipo del Sistema: Sistema operativo de 64 bits, procesador basado en x64
+
+## PROGRAMAS ULITIZADOS
+Rstudios 4.2.2
