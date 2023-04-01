@@ -1,0 +1,162 @@
+<html>
+
+<head>
+<style type="text/css">
+.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<title>Proyecto Final</title>
+</head>
+
+<body>
+
+<p>Realice un paquete demostrativo para un conjunto de datos donde se requiere hacer un análisis recurrente. Su paquete debe tener las siguientes características. 
+
+- Al menos tres funciones distintas, 
+- Al menos uno de ellos realiza una gráfica utilizando ggplot
+- Cada función tiene al menos un expect_error identificado
+- Esta almacenado en GitHub con control de cambios y disponible para que el público lo pueda usar (Indicar cómo usar su paquete en el README.md).
+- Tiene una página web donde se explica sobre el paquete y las funciones con sus respectivos ejemplos. </p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(readr)</span>
+<span class="hl std">Gender_Inequality_Index</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">read_csv</span><span class="hl std">(</span><span class="hl str">&quot;Curso R/Gender_Inequality_Index.csv&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error: 'Curso R/Gender_Inequality_Index.csv' does not exist in current working directory ('C:/Users/USUARIO/Documents/Curso R').
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">View</span><span class="hl std">(Gender_Inequality_Index)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in as.data.frame(x): objeto 'Gender_Inequality_Index' no encontrado
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">install.packages</span><span class="hl std">(</span><span class="hl str">&quot;testthat&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Installing package into 'C:/Users/USUARIO/AppData/Local/R/win-library/4.2'
+## (as 'lib' is unspecified)
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in contrib.url(repos, &quot;source&quot;): trying to use CRAN without setting a mirror
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(ggplot2)</span>
+<span class="hl kwd">library</span><span class="hl std">(testthat)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## 
+## Attaching package: 'testthat'
+</pre></div>
+<div class="message"><pre class="knitr r">## The following objects are masked from 'package:readr':
+## 
+##     edition_get, local_edition
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Cargar los datos</span>
+<span class="hl std">datos</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span><span class="hl str">&quot;C:/Users/USUARIO/Documents/Curso R/Gender_Inequality_Index.csv&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># Filtrar los datos para excluir valores faltantes y extremadamente grandes</span>
+<span class="hl std">datos_filtrados</span> <span class="hl kwb">&lt;-</span> <span class="hl std">datos[</span><span class="hl kwd">complete.cases</span><span class="hl std">(datos), ]</span>
+<span class="hl std">rango</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">range</span><span class="hl std">(datos_filtrados</span><span class="hl opt">$</span><span class="hl std">F_secondary_educ, datos_filtrados</span><span class="hl opt">$</span><span class="hl std">M_secondary_educ)</span>
+
+<span class="hl com"># Calcular la media y la desviación estándar de los datos filtrados</span>
+<span class="hl std">media_f</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mean</span><span class="hl std">(datos_filtrados</span><span class="hl opt">$</span><span class="hl std">F_secondary_educ)</span>
+<span class="hl std">desv_est_f</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sd</span><span class="hl std">(datos_filtrados</span><span class="hl opt">$</span><span class="hl std">F_secondary_educ)</span>
+<span class="hl std">media_m</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mean</span><span class="hl std">(datos_filtrados</span><span class="hl opt">$</span><span class="hl std">M_secondary_educ)</span>
+<span class="hl std">desv_est_m</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sd</span><span class="hl std">(datos_filtrados</span><span class="hl opt">$</span><span class="hl std">M_secondary_educ)</span>
+
+<span class="hl com"># Establecer el rango de valores para el eje x</span>
+<span class="hl std">rango</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwd">min</span><span class="hl std">(datos_filtrados</span><span class="hl opt">$</span><span class="hl std">F_secondary_educ, datos_filtrados</span><span class="hl opt">$</span><span class="hl std">M_secondary_educ),</span>
+             <span class="hl kwd">max</span><span class="hl std">(datos_filtrados</span><span class="hl opt">$</span><span class="hl std">F_secondary_educ, datos_filtrados</span><span class="hl opt">$</span><span class="hl std">M_secondary_educ),</span>
+             <span class="hl kwc">length.out</span> <span class="hl std">=</span> <span class="hl num">100</span><span class="hl std">)</span>
+
+<span class="hl com"># Crear la secuencia de valores para el eje x</span>
+<span class="hl std">x</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">seq</span><span class="hl std">(rango[</span><span class="hl num">1</span><span class="hl std">], rango[</span><span class="hl num">2</span><span class="hl std">],</span> <span class="hl kwc">length.out</span> <span class="hl std">=</span> <span class="hl num">100</span><span class="hl std">)</span>
+
+<span class="hl com"># Crear vector de densidades de probabilidad normal</span>
+<span class="hl std">density_m</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">dnorm</span><span class="hl std">(x,</span> <span class="hl kwc">mean</span> <span class="hl std">= media_m,</span> <span class="hl kwc">sd</span> <span class="hl std">= desv_est_m)</span>
+<span class="hl std">density_f</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">dnorm</span><span class="hl std">(x,</span> <span class="hl kwc">mean</span> <span class="hl std">= media_f,</span> <span class="hl kwc">sd</span> <span class="hl std">= desv_est_f)</span>
+
+<span class="hl kwd">ggplot</span><span class="hl std">(</span><span class="hl kwc">data</span> <span class="hl std">= datos_filtrados,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= M_secondary_educ))</span> <span class="hl opt">+</span>
+  <span class="hl kwd">geom_density</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">fill</span> <span class="hl std">=</span> <span class="hl str">&quot;M_secondary_educ&quot;</span><span class="hl std">),</span> <span class="hl kwc">alpha</span> <span class="hl std">=</span> <span class="hl num">0.5</span><span class="hl std">,</span> <span class="hl kwc">show.legend</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span> <span class="hl opt">+</span>
+  <span class="hl kwd">stat_function</span><span class="hl std">(</span><span class="hl kwc">fun</span> <span class="hl std">= density_m,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">fill</span> <span class="hl std">=</span> <span class="hl str">&quot;M_secondary_educ&quot;</span><span class="hl std">),</span> <span class="hl kwc">alpha</span> <span class="hl std">=</span> <span class="hl num">0.5</span><span class="hl std">,</span> <span class="hl kwc">color</span> <span class="hl std">=</span> <span class="hl str">&quot;blue&quot;</span><span class="hl std">,</span> <span class="hl kwc">size</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">+</span>
+  <span class="hl kwd">geom_density</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= F_secondary_educ,</span> <span class="hl kwc">fill</span> <span class="hl std">=</span> <span class="hl str">&quot;F_secondary_educ&quot;</span><span class="hl std">),</span> <span class="hl kwc">alpha</span> <span class="hl std">=</span> <span class="hl num">0.5</span><span class="hl std">,</span> <span class="hl kwc">show.legend</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span> <span class="hl opt">+</span>
+  <span class="hl kwd">stat_function</span><span class="hl std">(</span><span class="hl kwc">fun</span> <span class="hl std">= density_f,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">fill</span> <span class="hl std">=</span> <span class="hl str">&quot;F_secondary_educ&quot;</span><span class="hl std">),</span> <span class="hl kwc">alpha</span> <span class="hl std">=</span> <span class="hl num">0.5</span><span class="hl std">,</span> <span class="hl kwc">color</span> <span class="hl std">=</span> <span class="hl str">&quot;red&quot;</span><span class="hl std">,</span> <span class="hl kwc">size</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">+</span>
+  <span class="hl kwd">scale_fill_manual</span><span class="hl std">(</span><span class="hl kwc">values</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;M_secondary_educ&quot;</span> <span class="hl std">=</span> <span class="hl str">&quot;blue&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;F_secondary_educ&quot;</span> <span class="hl std">=</span> <span class="hl str">&quot;red&quot;</span><span class="hl std">))</span> <span class="hl opt">+</span>
+  <span class="hl kwd">labs</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">=</span> <span class="hl str">&quot;Índice de desigualdad de género en educación secundaria&quot;</span><span class="hl std">,</span> <span class="hl kwc">y</span> <span class="hl std">=</span> <span class="hl str">&quot;Densidad&quot;</span><span class="hl std">)</span> <span class="hl opt">+</span>
+  <span class="hl kwd">theme_classic</span><span class="hl std">()</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning in stat_function(fun = density_m, aes(fill = &quot;M_secondary_educ&quot;), :
+## Ignoring unknown aesthetics: fill
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning in stat_function(fun = density_f, aes(fill = &quot;F_secondary_educ&quot;), :
+## Ignoring unknown aesthetics: fill
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com"># Agregar leyenda</span>
+<span class="hl kwd">legend</span><span class="hl std">(</span><span class="hl str">&quot;topright&quot;</span><span class="hl std">,</span> <span class="hl kwc">legend</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;M_secondary_educ&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;F_secondary_educ&quot;</span><span class="hl std">),</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;red&quot;</span><span class="hl std">),</span> <span class="hl kwc">lwd</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in (function (s, units = &quot;user&quot;, cex = NULL, font = NULL, vfont = NULL, : plot.new has not been called yet
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Prueba para verificar si la llamada a dnorm para y_m produce un error</span>
+<span class="hl kwd">expect_error</span><span class="hl std">({</span>
+  <span class="hl std">y_m</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">dnorm</span><span class="hl std">(x,</span> <span class="hl kwc">mean</span> <span class="hl std">= media_m,</span> <span class="hl kwc">sd</span> <span class="hl std">=</span> <span class="hl str">&quot;desv_est_m&quot;</span><span class="hl std">)</span>
+<span class="hl std">})</span>
+</pre></div>
+</div></div>
+
+</body>
+</html>
